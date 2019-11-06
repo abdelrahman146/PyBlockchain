@@ -16,7 +16,7 @@ from threading import Thread
 
 
 class Miner(Thread):
-    def __init__(self, owner_public_key=None, owner_message=None):
+    def __init__(self, owner_public_key, owner_message):
         Thread.__init__(self)
         self.mempool = get_mempool()
         self.blockchain = get_blockchain()
@@ -28,7 +28,7 @@ class Miner(Thread):
             self.mine()
 
     def mine(self):
-        if len(self.mempool.contracts) == 2:
+        if len(self.mempool.contracts) == 5:
             previous_block_hash = self.blockchain.peak().get_hash()
             block = Block(
                 previous_block_hash=previous_block_hash,
@@ -37,5 +37,6 @@ class Miner(Thread):
                 miner_message=self.owner_message
             )
             self.blockchain.insert_block(block)
+            print("A new Block is successfully added by the miner")
             print(get_blockchain().get_json())
             self.mempool.clean_pool()

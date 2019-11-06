@@ -11,12 +11,24 @@ SmartContract is the factory of actions that can be made in the blockchain
 
 from abc import ABC, abstractmethod
 
+from helpers import crypto, hashing
+
 
 class SmartContract(ABC):
 
-    @abstractmethod
+    def __init__(self, contract_name, contract_issuer_pk, amount, msg, signature):
+        self.contract_name = contract_name
+        self.contract_issuer_pk = contract_issuer_pk
+        self.amount = amount
+        self.msg = msg
+        self.signature = signature
+
     def is_valid_contract(self):
-        pass
+        return crypto.verify_signature(
+            public_pem_string=self.contract_issuer_pk,
+            signature=self.signature,
+            message=self.get_hash()
+        )
 
     @abstractmethod
     def run_contract(self):

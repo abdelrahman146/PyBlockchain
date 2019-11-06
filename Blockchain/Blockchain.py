@@ -10,6 +10,7 @@ Blockchain is the sequence of blocks that contains all the history of the system
 import json
 
 from Blockchain.Block import Genesis
+from helpers import crypto
 
 the_blockchain = None
 
@@ -24,7 +25,10 @@ class Blockchain:
 
     def __init__(self):
         self.blocks = []
-        self.blocks.append(Genesis(miner_public_key='CREATOR_PUBLIC_KEY', miner_message='First BLOCK'))
+        password = crypto.generate_password()
+        private_key = crypto.generate_private_pem_string(password=password)
+        self.creator_public_key = crypto.generate_public_pem_string(private_pem_string=private_key, password=password)
+        self.blocks.append(Genesis(miner_public_key=self.creator_public_key, miner_message='The GENESIS BLOCK'))
 
     # return the top most block
     def peak(self):

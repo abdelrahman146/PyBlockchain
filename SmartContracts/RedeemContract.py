@@ -17,17 +17,13 @@ from helpers import hashing
 
 class RedeemContract(SmartContract, ABC):
     def __init__(self, contract_issuer_pk, amount, msg, signature):
-        self.contract_name = 'REDEEM'
-        self.contract_issuer_pk = contract_issuer_pk
-        self.amount = amount
-        self.msg = msg
-        self.signature = signature
+        super().__init__('REDEEM', contract_issuer_pk, amount, msg, signature)
 
     # this method runs when the miner collects the contracts form the mempool
     def run_contract(self):
         self.redeem()
 
-    # burn the amount
+    # burn the amount and withrdaw money from the reserve
     def redeem(self):
         pass  # TODO
 
@@ -36,17 +32,20 @@ class RedeemContract(SmartContract, ABC):
         json_data = json.dumps(data)
         return hashing.hash(json_data)
 
+    # TODO
     def is_valid_contract(self):
-        pass
+        return super().is_valid_contract()
 
     def get_dict(self):
-        return {
+        dict = {
             'contract_name': self.contract_name,
             'contract_issuer_pk': hashing.hash(self.contract_issuer_pk),
             'amount': self.amount,
-            'msg': self.msg,
-            'contract_hash': self.get_hash()
+            'msg': self.msg
         }
+        dict_json = json.dumps(dict)
+        dict.update({'contract_hash': hashing.hash(dict_json)})
+        return dict
 
     def get_json(self):
         return json.dumps(self.get_dict())

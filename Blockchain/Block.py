@@ -30,18 +30,21 @@ class Block:
         contracts_list = []
         for contract in self.contracts:
             contracts_list.append(contract.get_dict())
-        return {
+        dict = {
             'previous_block_hash': self.previous_block_hash,
             'contracts': contracts_list,
-            'miner_public_key': self.miner_public_key,
+            'miner_public_key': hashing.hash(self.miner_public_key),
             'miner_msg': self.miner_message
         }
+        dict_json = json.dumps(dict)
+        dict.update({'block_hash': hashing.hash(dict_json)})
+        return dict
 
     def get_json(self):
         return json.dumps(self.get_dict())
 
 
-class Genesis(Block):
+class Genesis():
     def __init__(self, miner_public_key, miner_message):
         self.miner_public_key = miner_public_key
         self.miner_message = miner_message
@@ -53,11 +56,14 @@ class Genesis(Block):
         return hashing.hash(json_data)
 
     def get_dict(self):
-        return {
+        dict = {
             'contracts': [],
-            'miner_public_key': self.miner_public_key,
+            'miner_public_key': hashing.hash(self.miner_public_key),
             'miner_msg': self.miner_message
         }
+        dict_json = json.dumps(dict)
+        dict.update({'block_hash': hashing.hash(dict_json)})
+        return dict
 
     def get_json(self):
         return json.dumps(self.get_dict())
