@@ -23,7 +23,7 @@ def get_miner():
 
 
 class Miner:
-    def __init__(self, owner_public_key, owner_message):
+    def __init__(self, owner_public_key=None, owner_message=None):
         self.blockchain = get_blockchain()
         self.mempool = get_mempool()
         self.owner_public_key = owner_public_key
