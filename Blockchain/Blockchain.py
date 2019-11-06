@@ -7,6 +7,9 @@ github: http://github.com/abdelrahman146
 This class defines the blockchain
 Blockchain is the sequence of blocks that contains all the history of the system
 """
+import json
+
+from Blockchain.Block import Genesis
 
 the_blockchain = None
 
@@ -17,38 +20,81 @@ def get_blockchain():
         the_blockchain = Blockchain()
     return the_blockchain
 
+
 class Blockchain:
 
     def __init__(self):
         self.blocks = []
+        self.blocks.append(Genesis(miner_public_key='CREATOR_PUBLIC_KEY', miner_message='First BLOCK'))
 
     # return the top most block
     def peak(self):
-        pass  # TODO
+        return self.blocks.pop()
 
     # insert a new block
     def insert_block(self, block):
         self.blocks.append(block)
 
+    def get_pk_balance(self, public_key):
+        balance = 0
+        for block in self.blocks:
+            for contract in block.contracts:
+                if contract.contract_name == 'ISSUE':
+                    if contract.contract_issuer_pk == public_key:
+                        balance = balance + contract.amount
+                elif contract.contract_name == 'REDEEM':
+                    if contract.contract_issuer_pk == public_key:
+                        balance = balance - contract.amount
+                elif contract.contract_name == 'SEND':
+                    if contract.contract_issuer_pk == public_key:
+                        balance = balance - contract.amount
+                    if contract.contract_counterparty_pk == public_key:
+                        balance = balance + contract.amount
+        return balance
+
+    def get_pk_contracts(self, public_key):
+        contracts = []
+        for block in self.blocks:
+            for contract in block.contracts:
+                if contract.contract_issuer_pk == public_key:
+                    contracts.append(contract)
+                elif contract.contract_name == 'SEND':
+                    if contract.contract_counterparty_pk == public_key:
+                        contracts.append(contract)
+        return contracts
+
     # compare which blockchain is taller
     def get_height(self):
-        pass  # TODO
+        return len(self.blocks)
+
+    def get_balance(self):
+        balance = 0
+        for block in self.blocks:
+            for contract in block.contracts:
+                if contract.contract_name == 'ISSUE':
+                    balance = balance + contract.amount
+                elif contract.contract_name == 'REDEEM':
+                    balance = balance - contract.amount
+        return balance
 
     # check the validity of the received blockchain
     def is_valid_blockchain(self, blocks):
         pass  # TODO
 
     def store_block(self, block):
-        pass # TODO add the block in storage
+        pass  # TODO add the block in storage
 
     # retrieve blockchain json
     def get_json(self):
-        pass  # TODO
+        return json.dumps(self.get_dict())
 
     # retrieve blockchain dict
     def get_dict(self):
-        pass  # TODO
-
-    # retrieve blockchain hashes
-    def get_dict(self):
-        pass  # TODO
+        blocks_dict = []
+        for block in self.blocks:
+            blocks_dict.append(block.get_dict())
+        return {
+            'height': self.get_height(),
+            'balance': self.get_balance(),
+            'blocks': blocks_dict
+        }

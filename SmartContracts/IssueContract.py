@@ -41,8 +41,7 @@ class IssueContract(SmartContract, ABC):
             'contract_name': self.contract_name,
             'contract_issuer_pk': self.contract_issuer_pk,
             'amount': self.amount,
-            'msg': self.msg,
-            'contract_hash': self.get_hash()
+            'msg': self.msg
         }
 
     def get_json(self):

@@ -39,3 +39,23 @@ class Block:
 
     def get_json(self):
         return json.dumps(self.get_dict())
+
+
+class Genesis(Block):
+    def __init__(self, miner_public_key, miner_message):
+        self.miner_public_key = miner_public_key
+        self.miner_message = miner_message
+
+    def get_hash(self):
+        data = self.get_dict()
+        json_data = json.dumps(data)
+        return hashing.hash(json_data)
+
+    def get_dict(self):
+        return {
+            'miner_public_key': self.miner_public_key,
+            'miner_msg': self.miner_message
+        }
+
+    def get_json(self):
+        return json.dumps(self.get_dict())

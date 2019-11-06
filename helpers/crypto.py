@@ -40,8 +40,7 @@ def load_private_key(private_pem, password):
 
 
 # generate a private pem string
-def generate_private_pem_string(password):
-    private_key = generate_private_key()
+def generate_private_pem_string(private_key, password):
     private_pem = generate_private_pem(private_key, password.encode('utf-8'))
     return private_pem.decode()
 
