@@ -19,9 +19,9 @@ from helpers import crypto, hashing
 
 class Wallet:
     def __init__(self):
-        self.private_key = crypto.generate_private_key()
         self.password = crypto.generate_password()
-        self.public_key = crypto.generate_public_key(private_key=self.private_key)
+        self.private_key = crypto.generate_private_pem_string(password=self.password)
+        self.public_key = crypto.generate_public_pem_string(private_pem_string=self.private_key, password=self.password)
         self.blockchain = get_blockchain()
         self.mempool = get_mempool()
 
@@ -37,7 +37,7 @@ class Wallet:
             'msg': msg
         })
         signature = crypto.sign(
-            private_pem_string=crypto.generate_private_pem_string(self.private_key,self.password),
+            private_pem_string=self.private_key,
             password=self.password,
             message=hashing.hash(contract_json)
         )
@@ -58,7 +58,7 @@ class Wallet:
             'msg': msg
         })
         signature = crypto.sign(
-            private_pem_string=crypto.generate_private_pem_string(self.private_key,self.password),
+            private_pem_string=self.private_key,
             password=self.password,
             message=hashing.hash(contract_json)
         )
@@ -78,7 +78,7 @@ class Wallet:
             'msg': msg
         })
         signature = crypto.sign(
-            private_pem_string=crypto.generate_private_pem_string(self.private_key,self.password),
+            private_pem_string=self.private_key,
             password=self.password,
             message=hashing.hash(contract_json)
         )

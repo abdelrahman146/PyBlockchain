@@ -13,10 +13,9 @@ from Blockchain.Block import Genesis
 
 the_blockchain = None
 
-
 def get_blockchain():
     global the_blockchain
-    if the_blockchain == None:
+    if the_blockchain is None:
         the_blockchain = Blockchain()
     return the_blockchain
 
@@ -29,7 +28,7 @@ class Blockchain:
 
     # return the top most block
     def peak(self):
-        return self.blocks.pop()
+        return self.blocks[-1]
 
     # insert a new block
     def insert_block(self, block):

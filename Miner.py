@@ -11,31 +11,31 @@ The Miner is the machine that creates new blocks and add it to the Blockchain
 from Mempool import get_mempool
 from Blockchain.Block import Block
 from Blockchain.Blockchain import get_blockchain
-
-the_miner = None
-
-
-def get_miner():
-    global the_miner
-    if the_miner is None:
-        the_miner = Miner()
-    return the_miner
+from helpers import hashing
+from threading import Thread
 
 
-class Miner:
+class Miner(Thread):
     def __init__(self, owner_public_key=None, owner_message=None):
-        self.blockchain = get_blockchain()
+        Thread.__init__(self)
         self.mempool = get_mempool()
+        self.blockchain = get_blockchain()
         self.owner_public_key = owner_public_key
         self.owner_message = owner_message
 
-    def mine(self, contracts):
-        previous_block_hash = self.blockchain.peak().get_hash()
-        block = Block(
-            previous_block_hash=previous_block_hash,
-            contracts=contracts,
-            miner_public_key=self.owner_public_key,
-            miner_message=self.owner_message
-        )
-        self.blockchain.insert_block(block)
-        self.mempool.clean_pool()
+    def run(self):
+        while True:
+            self.mine()
+
+    def mine(self):
+        if len(self.mempool.contracts) == 2:
+            previous_block_hash = self.blockchain.peak().get_hash()
+            block = Block(
+                previous_block_hash=previous_block_hash,
+                contracts=self.mempool.contracts,
+                miner_public_key=hashing.hash(self.owner_public_key),
+                miner_message=self.owner_message
+            )
+            self.blockchain.insert_block(block)
+            print(get_blockchain().get_json())
+            self.mempool.clean_pool()

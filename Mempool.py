@@ -10,8 +10,6 @@ Mempool is the area where the signed and valid SmartContracts are kept
 before being indexed in the blockchain
 """
 
-from Miner import get_miner
-
 the_mempool = None
 
 
@@ -21,10 +19,10 @@ def get_mempool():
         the_mempool = Mempool()
     return the_mempool
 
+
 class Mempool:
 
     def __init__(self):
-        self.miner = get_miner()
         self.contracts = []
 
     def clean_pool(self):
@@ -33,8 +31,6 @@ class Mempool:
     # insert a new contract
     def insert_contract(self, contract):
         self.contracts.append(contract)
-        if len(self.contracts) == 1:
-            self.miner.mine(self.contracts)
 
     # check contract is valid (the mempool can accept one smart contract for each public key)
     def is_valid_contract(self, contract):

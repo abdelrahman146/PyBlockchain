@@ -36,10 +36,13 @@ class RedeemContract(SmartContract, ABC):
         json_data = json.dumps(data)
         return hashing.hash(json_data)
 
+    def is_valid_contract(self):
+        pass
+
     def get_dict(self):
         return {
             'contract_name': self.contract_name,
-            'contract_issuer_pk': self.contract_issuer_pk,
+            'contract_issuer_pk': hashing.hash(self.contract_issuer_pk),
             'amount': self.amount,
             'msg': self.msg,
             'contract_hash': self.get_hash()

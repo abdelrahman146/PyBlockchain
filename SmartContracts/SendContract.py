@@ -31,11 +31,14 @@ class SendContract(SmartContract, ABC):
         json_data = json.dumps(data)
         return hashing.hash(json_data)
 
+    def is_valid_contract(self):
+        pass
+
     def get_dict(self):
         return {
             'contract_name': self.contract_name,
-            'contract_issuer_pk': self.contract_issuer_pk,
-            'contract_counterparty_pk': self.contract_counterparty_pk,
+            'contract_issuer_pk': hashing.hash(self.contract_issuer_pk),
+            'contract_counterparty_pk': hashing.hash(self.contract_counterparty_pk),
             'amount': self.amount,
             'msg': self.msg
         }

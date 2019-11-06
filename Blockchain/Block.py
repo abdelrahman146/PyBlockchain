@@ -45,6 +45,7 @@ class Genesis(Block):
     def __init__(self, miner_public_key, miner_message):
         self.miner_public_key = miner_public_key
         self.miner_message = miner_message
+        self.contracts = []
 
     def get_hash(self):
         data = self.get_dict()
@@ -53,6 +54,7 @@ class Genesis(Block):
 
     def get_dict(self):
         return {
+            'contracts': [],
             'miner_public_key': self.miner_public_key,
             'miner_msg': self.miner_message
         }
