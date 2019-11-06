@@ -1,12 +1,21 @@
 """
-Project: PyBlockchain
-Author: Abdel Rahman Hussein
-Email: abdelrahman146@outlook.com
+project: PyBlockchain
+author: Abdel Rahman Hussein
+email: abdelrahman146@outlook.com
 github: http://github.com/abdelrahman146
 
 This class defines the blockchain
+Blockchain is the sequence of blocks that contains all the history of the system
 """
 
+the_blockchain = None
+
+
+def get_blockchain():
+    global the_blockchain
+    if the_blockchain == None:
+        the_blockchain = Blockchain()
+    return the_blockchain
 
 class Blockchain:
 
@@ -21,10 +30,6 @@ class Blockchain:
     def insert_block(self, block):
         pass  # TODO
 
-    # get the balance of a public key
-    def get_utxos(self, public_key):
-        pass  # TODO
-
     # compare which blockchain is taller
     def get_height(self):
         pass  # TODO
@@ -32,6 +37,9 @@ class Blockchain:
     # check the validity of the received blockchain
     def is_valid_blockchain(self, blocks):
         pass  # TODO
+
+    def store_block(self, block):
+        pass # TODO add the block in storage
 
     # retrieve blockchain json
     def get_json(self):

@@ -1,26 +1,36 @@
 """
-Project: PyBlockchain
-Author: Abdel Rahman Hussein
-Email: abdelrahman146@outlook.com
+project: PyBlockchain
+author: Abdel Rahman Hussein
+email: abdelrahman146@outlook.com
 github: http://github.com/abdelrahman146
+repo: http://github.com/abdelrahman146/PyBlockchain
 
 This class defines a Mempool
+Mempool is the area where the signed and valid SmartContracts are kept
+before being indexed in the blockchain
 """
 
+the_mempool = None
+
+
+def get_mempool():
+    global the_mempool
+    if the_mempool is None:
+        the_mempool = Mempool()
+    return the_mempool
 
 class Mempool:
 
     def __init__(self):
-        self.transactions = []
+        self.contracts = []
 
-    # insert a new transaction
-    def insert_transaction(self, transaction):
-        pass  # TODO
+    def clean_pool(self):
+        self.contracts = []
 
-    # remove a transaction from a mempool
-    def remove_transaction(self, transaction_hash):
-        pass  # TODO
+    # insert a new contract
+    def insert_contract(self, contract):
+        pass  # TODO when length = 5 Miner.mine()
 
-    # check transaction is valid
-    def is_valid_transaction(self, transaction):
+    # check contract is valid (the mempool can accept one smart contract for each public key)
+    def is_valid_contract(self, contract):
         pass  # TODO
