@@ -20,7 +20,7 @@ def get_blockchain():
 class Blockchain:
 
     def __init__(self):
-        self.blocks = {}
+        self.blocks = []
 
     # return the top most block
     def peak(self):
@@ -28,7 +28,7 @@ class Blockchain:
 
     # insert a new block
     def insert_block(self, block):
-        pass  # TODO
+        self.blocks.append(block)
 
     # compare which blockchain is taller
     def get_height(self):
