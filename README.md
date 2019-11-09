@@ -1,6 +1,8 @@
+**Important Note:** README is not updated!
+
 # a blockchain system to create crypto-twin for fiat currencies
 
-This is is a blockchain system that I did code based on my imagination of how blockchain system should work and based on what I have learned from the lectures.
+This is a blockchain system that I did code based on my imagination of how blockchain system should work and based on what I have learned from the lectures.
 
 ## Description of the system
 This blockchain system is basically built to create a digital currency that are coupled with fiat currencies. In other words, the users can issue a digital currencies with an equal amount of a deposited fiat in a consildated money reserve.
