@@ -24,11 +24,14 @@ class SmartContract(ABC):
         self.signature = signature
 
     def is_valid_contract(self):
-        return crypto.verify_signature(
+        valid = crypto.verify_signature(
             public_pem_string=self.contract_issuer_pk,
             signature=self.signature,
             message=self.get_hash()
         )
+        if not valid:
+            print('signature is not valid')
+        return valid
 
     @abstractmethod
     def run_contract(self):

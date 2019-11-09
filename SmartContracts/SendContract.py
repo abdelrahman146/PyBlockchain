@@ -28,11 +28,13 @@ class SendContract(SmartContract, ABC):
         json_data = json.dumps(data)
         return hashing.hash(json_data)
 
+
     def is_valid_contract(self):
         signature_valid = super().is_valid_contract()
         pk_balance = get_blockchain().get_pk_balance(self.contract_issuer_pk)
         if pk_balance >= self.amount:
             return True and signature_valid
+        print('not enough balance in wallet')
         return False
 
     def get_dict(self):

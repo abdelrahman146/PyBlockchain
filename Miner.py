@@ -7,6 +7,7 @@ github: http://github.com/abdelrahman146
 This class defines a Miner
 The Miner is the machine that creates new blocks and add it to the Blockchain
 """
+import json
 
 from Mempool import get_mempool
 from Blockchain.Block import Block
@@ -29,7 +30,8 @@ class Miner(Thread):
 
     def mine(self):
         if len(self.mempool.contracts) == 5:
-            previous_block_hash = self.blockchain.peak().get_hash()
+            previous_block = json.loads(self.blockchain.peak())
+            previous_block_hash = previous_block['block_hash']
             block = Block(
                 previous_block_hash=previous_block_hash,
                 contracts=self.mempool.contracts,
@@ -37,6 +39,5 @@ class Miner(Thread):
                 miner_message=self.owner_message
             )
             self.blockchain.insert_block(block)
-            print("A new Block is successfully added by the miner")
-            print(get_blockchain().get_json())
+            print("Block %d is successfully added by the miner" % self.blockchain.get_height())
             self.mempool.clean_pool()
